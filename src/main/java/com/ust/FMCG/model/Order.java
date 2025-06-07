@@ -32,6 +32,7 @@ public class Order {
     private LocalDateTime orderDate;
 
     private String buyerName;
-    
+
+    private String status = "ORDERED";
     // Constructors, getters, setters
 }
