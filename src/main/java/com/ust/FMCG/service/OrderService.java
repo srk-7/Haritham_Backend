@@ -46,6 +46,8 @@ public class OrderService {
         order.setTotalPrice(product.getPricePerUnit() * request.getQuantity());
         order.setBuyerId(buyer.getId());
         order.setBuyerName(buyer.getName());
+        order.setBuyerMobile(buyer.getMobile());
+        order.setBuyerEmpId(buyer.getEmpId());
         order.setSellerId(product.getSellerId());
         order.setOrderDate(LocalDateTime.now());
 
@@ -60,5 +62,9 @@ public class OrderService {
 
     public List<Order> getOrdersForSeller(String sellerId) {
         return orderRepository.findBySellerId(sellerId);
+    }
+
+    public List<Order> getOrdersByProductId(String productId) {
+        return orderRepository.findByProductId(productId);
     }
 }

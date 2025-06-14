@@ -45,10 +45,9 @@ public class OrderController {
 
         Order order = optionalOrder.get();
 
-        // Basic validation (optional)
-//        if (!status.equals("PACKED") && !status.equals("PLACED_ON_HARITHAM_TABLE")) {
-//            return ResponseEntity.badRequest().body("Invalid status");
-//        }
+        if (!isValidStatus(status)) {
+            return ResponseEntity.badRequest().body("Invalid status. Must be one of: ORDERED, PACKED, PLACED_ON_HARITHAM_TABLE, COLLECTED");
+        }
 
         order.setStatus(status);
         orderRepository.save(order);
@@ -56,10 +55,24 @@ public class OrderController {
         return ResponseEntity.ok("Order status updated to: " + status);
     }
 
+    private boolean isValidStatus(String status) {
+        return status != null && (
+            status.equals("ORDERED") ||
+            status.equals("PACKED") ||
+            status.equals("PLACED_ON_HARITHAM_TABLE") ||
+            status.equals("COLLECTED")
+        );
+    }
+
     @GetMapping("/buyer/{buyerId}")
     public ResponseEntity<List<Order>> getOrdersByBuyer(@PathVariable String buyerId) {
         List<Order> orders = orderRepository.findByBuyerId(buyerId);
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<?> getOrdersByProduct(@PathVariable String productId) {
+        return ResponseEntity.ok(orderService.getOrdersByProductId(productId));
     }
 
 }

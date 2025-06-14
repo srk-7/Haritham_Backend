@@ -33,6 +33,10 @@ public class Order {
 
     private String buyerName;
 
+    private String buyerMobile;
+
+    private String buyerEmpId;
+
     private String status = "ORDERED";
     // Constructors, getters, setters
 }
