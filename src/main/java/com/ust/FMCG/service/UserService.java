@@ -1,6 +1,7 @@
 package com.ust.FMCG.service;
 
 import com.ust.FMCG.dto.LoginRequest;
+import com.ust.FMCG.dto.PasswordUpdateRequest;
 import com.ust.FMCG.dto.UserProfileUpdateRequest;
 import com.ust.FMCG.model.Order;
 import com.ust.FMCG.model.User;
@@ -99,5 +100,30 @@ public class UserService {
 
     public List<Order> getOrderHistory(String userId) {
         return orderRepository.findByBuyerId(userId);
+    }
+
+    public User updatePassword(String userId, PasswordUpdateRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Verify current password
+        byte[] salt = Base64.getDecoder().decode(user.getSalt());
+        String hashedCurrentPwd = hashPassword(request.getCurrentPassword(), salt);
+
+        if (!hashedCurrentPwd.equals(user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        // Generate new salt and hash new password
+        byte[] newSalt = new byte[16];
+        secureRandom.nextBytes(newSalt);
+        String newSaltBase64 = Base64.getEncoder().encodeToString(newSalt);
+        String hashedNewPwd = hashPassword(request.getNewPassword(), newSalt);
+
+        // Update user's password and salt
+        user.setPassword(hashedNewPwd);
+        user.setSalt(newSaltBase64);
+
+        return userRepository.save(user);
     }
 }

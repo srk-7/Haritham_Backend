@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -56,10 +57,23 @@ public class ProductService {
     public List<Product> getSellerProducts(String sellerId) {
         return productRepository.findBySellerId(sellerId);
     }
+
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll().stream()
+                .filter(Product::isVisible)
+                .collect(Collectors.toList());
     }
+
     public List<Product> getProductsByCategory(String category) {
-        return productRepository.findByCategoryIgnoreCase(category);
+        return productRepository.findByCategoryIgnoreCase(category).stream()
+                .filter(Product::isVisible)
+                .collect(Collectors.toList());
+    }
+
+    public Product updateProductVisibility(String id, boolean visible) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setVisible(visible);
+        return productRepository.save(product);
     }
 }

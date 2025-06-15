@@ -46,4 +46,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductsByCategory(category));
     }
 
+    @PutMapping("/{id}/visibility")
+    public ResponseEntity<?> updateProductVisibility(
+            @PathVariable String id,
+            @RequestParam boolean visible) {
+        return ResponseEntity.ok(productService.updateProductVisibility(id, visible));
+    }
+
 }

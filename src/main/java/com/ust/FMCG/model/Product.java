@@ -29,5 +29,7 @@ public class Product {
 
     private String sellerId; // reference to User
 
+    private boolean visible = true; // default visibility is true
+
     // Constructors, getters, setters
 }

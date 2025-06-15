@@ -1,6 +1,7 @@
 package com.ust.FMCG.controller;
 
 import com.ust.FMCG.dto.LoginRequest;
+import com.ust.FMCG.dto.PasswordUpdateRequest;
 import com.ust.FMCG.dto.UserProfileUpdateRequest;
 import com.ust.FMCG.model.Order;
 import com.ust.FMCG.model.User;
@@ -60,5 +61,16 @@ public class UserController {
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<Order>> getOrderHistory(@PathVariable String userId) {
         return ResponseEntity.ok(userService.getOrderHistory(userId));
+    }
+
+    @PutMapping("/{userId}/password")
+    public ResponseEntity<?> updatePassword(
+            @PathVariable String userId,
+            @RequestBody PasswordUpdateRequest request) {
+        try {
+            return ResponseEntity.ok(userService.updatePassword(userId, request));
+        } catch (Exception e) {
+            throw new RuntimeException("Password update failed: " + e.getMessage());
+        }
     }
 }
