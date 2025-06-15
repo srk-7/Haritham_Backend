@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "https://haritham-frontend.vercel.app", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {

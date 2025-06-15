@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "https://haritham-frontend.vercel.app", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
